@@ -117,11 +117,11 @@ public:
     /// @param _p2 is the second point type shared pointer.
     /// @param _p3 is the second point type shared pointer.
 
-    bendingConstraint(std::shared_ptr<point> _p1, std::shared_ptr<point> _p2, std::shared_ptr<point> _p3);
+    bendingConstraint(std::shared_ptr<point> _p1, std::shared_ptr<point> _p2, std::shared_ptr<point> _p3, std::shared_ptr<point> _p4);
 
     /// @brief Constructor with regular pointers for convenience.
 
-    bendingConstraint(point & _p1, point & _p2, point & _p3);
+    bendingConstraint(point & _p1, point & _p2, point & _p3, point & _p4);
 
     /// @brief timeStep project the bending constraint and store new values in points.
 
@@ -152,13 +152,17 @@ private:
 
     std::shared_ptr<point> m_p1;
 
-    /// @param m_p2 shared pointer of type point to first constraint point
+    /// @param m_p2 shared pointer of type point to second constraint point
 
     std::shared_ptr<point> m_p2;
 
-    /// @param m_p3 shared pointer of type point to first constraint point
+    /// @param m_p3 shared pointer of type point to third constraint point
 
     std::shared_ptr<point> m_p3;
+
+    /// @param m_p3 shared pointer of type point to fourth constraint point
+
+    std::shared_ptr<point> m_p4;
 
     /// @param m_angle angle between the segments at rest
 

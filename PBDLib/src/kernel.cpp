@@ -1,9 +1,13 @@
 #include "kernel.h"
+#include <experimental/filesystem>
 
 namespace LuHu {
 
 const aiScene* getModel(std::string _model)
 {
+//    std::string path = std::experimental::filesystem::current_path();
+//    std::string finalPath = path+ "/../PBDLib/models/" +_model;
+//    std::cout<<finalPath<<std::endl;
     const aiScene* scene= aiImportFile(_model.c_str(),  aiProcess_CalcTangentSpace       |
                                        aiProcess_Triangulate            |
                                        aiProcess_JoinIdenticalVertices  |
@@ -151,10 +155,10 @@ std::vector<std::shared_ptr<point>> getFaces(const aiScene* scene, uint meshInde
             }
         }
 
-        for(uint i=0;i<(numFace-1); i++)
+        for(uint i=0;i<(numFace); i++)
         {
             auto faceIndices=faces[i].mIndices;
-            if(faces[i].mNumIndices==3 && i!=numFace-1)
+            if(faces[i].mNumIndices==3 )//&& i!=numFace-1)
             {
                 //std::cout<<"tri\n";
                 _temp.push_back(indexTrio(filter[faceIndices[0]], filter[faceIndices[1]] , filter[faceIndices[2]]));

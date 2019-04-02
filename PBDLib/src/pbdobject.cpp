@@ -36,6 +36,23 @@ bool PBDobject::Initialize(std::string _model,uint _meshIndex, glm::vec3 _origin
     return true;
 }
 
+bool PBDobject::Initialize(glm::vec3 _originalPos, std::vector<std::shared_ptr<point>> _Points)
+{
+    if(_Points.size() != 0)
+    {
+        m_Points=_Points;
+        for(auto p : m_Points)
+        {
+            p->setP( p->getP() + _originalPos);
+
+        }
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
 const std::vector<std::shared_ptr<constraint>> & PBDobject::getConstraints() const
 {
     return m_Constraints;
@@ -52,9 +69,21 @@ void PBDobject::addPoint(std::shared_ptr<point>  _newP)
     m_Points.push_back(_newP);
 }
 
+void PBDobject::addPoint(point &_newP)
+{
+    auto _tempP = std::make_shared<point>(_newP);
+    m_Points.push_back(_tempP );
+}
+
 void PBDobject::addConstraint(std::shared_ptr<constraint> _newCon)
 {
     m_Constraints.push_back(_newCon);
+}
+
+void PBDobject::addConstraint(constraint &_newCon)
+{
+    auto _tempC = std::make_shared<constraint>(_newCon);
+    m_Constraints.push_back(_tempC);
 }
 
 const std::vector<std::shared_ptr<point>> & PBDobject::getFacesPoints() const

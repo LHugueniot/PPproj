@@ -10,6 +10,7 @@ int main(int argc, char **argv)
 
 using namespace LuHu;
 
+//std::string modelName="deCube.obj";
 std::string modelName="/home/s4906706/Documents/PP/PPproj/LuHuPBDLib/PBDLib/models/deCube.obj";
 //std::string modelName="/home/datlucien/Documents/PP/PPproj/PBDLib/models/deCube.obj";
 
@@ -161,13 +162,15 @@ TEST(distanceConstraint, constructor)
 
 TEST(bendingConstraint, constructor)
 {
-    auto p1 = point(glm::vec3(0), glm::vec3(0), 1.0f);
-    auto p2 = point(glm::vec3(0), glm::vec3(0), 1.0f);
-    auto p3 = point(glm::vec3(0), glm::vec3(0), 1.0f);
-    auto test = new LuHu::bendingConstraint(p1, p2, p3);
+    auto p1 = point(glm::vec3(0, 0, 0), glm::vec3(0), 1.0f);
+    auto p2 = point(glm::vec3(1, 0, 0), glm::vec3(0), 1.0f);
+    auto p3 = point(glm::vec3(0, 1, 0), glm::vec3(0), 1.0f);
+    auto p4 = point(glm::vec3(0.5, 0.5, 1), glm::vec3(0), 1.0f);
+    auto test = new LuHu::bendingConstraint(p1, p2, p3, p4);
     ASSERT_TRUE(test->getPoint(0));
     ASSERT_TRUE(test->getPoint(1));
     ASSERT_TRUE(test->getPoint(2));
+    EXPECT_EQ(test->getAngle(), 0);
 }
 
 TEST(kernel, compare)
@@ -226,4 +229,31 @@ TEST(solver, constructor)
 
     test.addPBDobject(TestPBD1);
 
+}
+
+
+TEST(bendingConstraint_and_DistanceConstraint, compatibility)
+{
+    LuHu::PBDobject testObj;
+    auto p1 = point(glm::vec3(0, 0, 0), glm::vec3(0), 1.0f);
+    auto p2 = point(glm::vec3(1, 0, 0), glm::vec3(0), 1.0f);
+    auto p3 = point(glm::vec3(0, 1, 0), glm::vec3(0), 1.0f);
+    auto p4 = point(glm::vec3(0.5, 0.5, 1), glm::vec3(0), 1.0f);
+    auto bendConTest = new LuHu::bendingConstraint(p1, p2, p3, p4);
+    auto distDonTest1 = new LuHu::distanceConstraint(p1,p2);
+    auto distDonTest2 = new LuHu::distanceConstraint(p2,p3);
+    auto distDonTest3 = new LuHu::distanceConstraint(p2,p4);
+    auto distDonTest4 = new LuHu::distanceConstraint(p3,p4);
+    auto distDonTest5 = new LuHu::distanceConstraint(p4,p1);
+
+    testObj.addConstraint(* bendConTest  );
+    testObj.addConstraint(*distDonTest1 );
+    testObj.addConstraint(*distDonTest2 );
+    testObj.addConstraint(*distDonTest3 );
+    testObj.addConstraint(*distDonTest4 );
+    testObj.addConstraint(*distDonTest5 );
+    ASSERT_TRUE(bendConTest->getPoint(0));
+    ASSERT_TRUE(bendConTest->getPoint(1));
+    ASSERT_TRUE(bendConTest->getPoint(2));
+    EXPECT_EQ(bendConTest->getAngle(), 0);
 }

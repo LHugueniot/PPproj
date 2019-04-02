@@ -37,6 +37,7 @@ MOC_DIR +=moc
 
 OBJECTS_DIR+= $$files($$PWD/obj)
 
+#DEFINE systempath = system_path($$PWD)
 
 FORMS += ui/mainwindow.ui
 

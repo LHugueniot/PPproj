@@ -26,6 +26,7 @@ public:
     void paintGL();
     void resizeGL(int w, int h);
 
+    void BendingConTest();
     void addPlain();
     void addCone();
     void addcube();

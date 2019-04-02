@@ -28,11 +28,12 @@ void solver::setDamp(float _damp)
     m_dampening=_damp;
 }
 
-bool solver::addPBDobject(std::shared_ptr<LuHu::PBDobject> _PBDobjectPtr)
+bool solver::addPBDobject(std::shared_ptr<LuHu::PBDobject> &_PBDobjectPtr)
 {
-    if(_PBDobjectPtr)
+    if(&_PBDobjectPtr)
     {
         m_PBDObjects.push_back(_PBDobjectPtr);
+        return true;
     }
     else{
         return false;
@@ -44,6 +45,10 @@ bool solver::addPBDobject(PBDobject & _PBDobjectPtr)
     if(&_PBDobjectPtr)
     {
         m_PBDObjects.push_back(std::make_shared<PBDobject>(_PBDobjectPtr));
+        return true;
+    }
+    else{
+        return false;
     }
 }
 
@@ -89,10 +94,14 @@ void solver::RunSolver(float dt)
         {
             point & p= *(objPoints[i].get());
             p.setV( p.getV()+
-                    (m_gravity* m_dampening*p.getIM()*inv_dt));
-            //printVec3(p.getV());
+                    (m_gravity*
+                     m_dampening*
+                     p.getIM()*
+                     inv_dt));
 
-            p.setTmp(p.getP() + p.getV() * inv_dt);
+            p.setTmp(p.getP()+
+                     p.getV()*
+                     inv_dt);
         }
 
         for (uint i=0; i<5; i++)

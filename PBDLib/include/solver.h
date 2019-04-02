@@ -24,8 +24,8 @@ public:
 
     /// @brief addPBDobject, adds a PBDobject to the simulation
 
-    bool addPBDobject(std::shared_ptr<LuHu::PBDobject> _PBDobjectPtr);
-    bool addPBDobject(PBDobject & _PBDobjectPtr);
+    bool addPBDobject(std::shared_ptr<PBDobject> &_PBDobjectPtr);
+    bool addPBDobject(PBDobject &_PBDobjectPtr);
 
     /// @brief rmPBDobject, removes a PBDobject to the simulation
 
